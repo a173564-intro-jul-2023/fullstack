@@ -1,20 +1,36 @@
 ﻿
+using Marten;
+
 namespace TodosApi.Controllers;
 
+[ApiController]
 public class TodoListController : ControllerBase
 {
+    private readonly IManageTheTodoListCatalog _todoListCatalog;
+
+    public TodoListController(IManageTheTodoListCatalog todoListCatalog)
+    {
+        _todoListCatalog = todoListCatalog;
+    }
+
+
+
+    // POST /todo-list
+    [HttpPost("/todo-list")]
+    public async Task<ActionResult> AddTodoItem([FromBody] TodoListCreateModel request)
+    {
+        TodoListItemResponseModel response = await _todoListCatalog.AddTodoItemAsync(request);
+
+        // Send it back to them
+        return Ok(response);
+    }
+
     // GET /todo-list
     [HttpGet("/todo-list")]
     public async Task<ActionResult> GetTodoList()
     {
-        var list = new List<TodoListItemResponseModel>
-        {
-            new TodoListItemResponseModel(Guid.NewGuid(), "Get Beer", TodoItemStatus.Now),
-            new TodoListItemResponseModel(Guid.NewGuid(), "Clean Garage", TodoItemStatus.Waiting)
-        };
+        CollectionResponse<TodoListItemResponseModel> list = await _todoListCatalog.GetFullListAsync();
 
-        var response = new CollectionResponse<TodoListItemResponseModel>(list);
-
-        return Ok(response);
+        return Ok(list);
     }
 }
