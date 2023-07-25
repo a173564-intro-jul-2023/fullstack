@@ -15,7 +15,9 @@ import { CountByComponent } from './components/count-by/count-by.component';
 export class CounterComponent {
   current = this.store.selectSignal(selectCounterCurrent);
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store) {
+    store.dispatch(CounterEvents.counterEntered());
+  }
 
   increment() {
     this.store.dispatch(CounterEvents.countIncremented());

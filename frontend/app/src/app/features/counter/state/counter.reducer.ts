@@ -28,5 +28,8 @@ export const reducer = createReducer(
   on(CounterEvents.countReset, (s) => ({ ...s, current: 0 })),
 
   // Count by
-  on(CounterEvents.countBySet, (s, a) => ({ ...s, by: a.by }))
+  on(CounterEvents.countBySet, (s, a) => ({ ...s, by: a.by })),
+
+  // Counter data
+  on(CounterEvents.counterData, (s, a) => a.payload)
 );
