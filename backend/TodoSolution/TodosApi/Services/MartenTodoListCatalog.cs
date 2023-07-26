@@ -9,12 +9,13 @@ namespace TodosApi.Services;
 public class MartenTodolistCatalog : IManageTheTodoListCatalog
 {
     private readonly IDocumentSession _session;
+    private readonly IProvideStatusCycling _statusCycler;
 
 
-
-    public MartenTodolistCatalog(IDocumentSession session)
+    public MartenTodolistCatalog(IDocumentSession session, IProvideStatusCycling statusCycler)
     {
         _session = session;
+        _statusCycler = statusCycler;
     }
 
 
@@ -28,6 +29,25 @@ public class MartenTodolistCatalog : IManageTheTodoListCatalog
         return response;
     }
 
+    public async Task<TodoListItemResponseModel?> ChangeStatusAsync(TodoListItemRequestModel request)
+    {
+        // check the database for the item, if it's not there, return null
+        var savedItem = await _session
+            .Query<TodoListItemResponseModel>()
+            .Where(t => t.Id == request.Id).SingleOrDefaultAsync();
+        if (savedItem == null)
+        {
+            return null;
+        }
+
+        // Change the status of the thing
+        TodoListItemResponseModel updated = _statusCycler.ProvideNextStatusFrom(savedItem);
+
+        // Save it in the database
+
+        // return the saved thing back
+        return null;
+    }
 
 
     public async Task<CollectionResponse<TodoListItemResponseModel>> GetFullListAsync()
