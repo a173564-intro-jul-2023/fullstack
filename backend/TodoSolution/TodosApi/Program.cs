@@ -28,10 +28,22 @@ builder.Services.AddMarten(options =>
 
 builder.Services.AddTransient<IManageTheTodoListCatalog, MartenTodolistCatalog>();
 
+// Avoid CORS error
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(pol =>
+    {
+        pol.AllowAnyOrigin();
+        pol.AllowAnyMethod();
+        pol.AllowAnyHeader();
+    });
+});
+
 // Everything above this line is configuring "Services" in our application -----------
 var app = builder.Build();
 
 // Below is configuring "middleware" - sees the incoming HTTP request and makes response
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
