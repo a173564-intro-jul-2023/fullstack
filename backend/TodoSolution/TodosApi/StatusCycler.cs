@@ -8,11 +8,14 @@ public class StatusCycler : IProvideStatusCycling
         TodoItemStatus[] statusArray = { TodoItemStatus.Later, TodoItemStatus.Now, TodoItemStatus.Waiting, TodoItemStatus.Completed };
 
         // get next number
-        int newStatus = 0;
-        if (currentStatus < 3)
-        {
-            newStatus = currentStatus + 1;
-        }
+        //int newStatus = 0;
+        //if (currentStatus < 3)
+        //{
+        //    newStatus = currentStatus + 1;
+        //}
+
+        // Better solution!
+        int newStatus = (currentStatus + 1) % statusArray.Length;
 
         return savedItem with { status = statusArray[newStatus] };
     }

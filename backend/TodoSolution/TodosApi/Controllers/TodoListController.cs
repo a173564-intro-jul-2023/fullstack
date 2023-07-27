@@ -17,11 +17,11 @@ public class TodoListController : ControllerBase
     [HttpPost("/todo-list-status-change")]
     public async Task<ActionResult> ChangeTheStatusOf([FromBody] TodoListItemRequestModel request)
     {
-        TodoListItemResponseModel response = await _todoListCatalog.ChangeStatusAsync(request);
+        TodoListItemResponseModel? response = await _todoListCatalog.ChangeStatusAsync(request);
 
         if (response == null)
         {
-            return BadRequest("No item with that Id to change the status of");
+            return BadRequest("No item with that ID to change the status of");
         } 
         else
         {

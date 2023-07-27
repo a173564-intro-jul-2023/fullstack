@@ -39,6 +39,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddTransient<IProvideStatusCycling, StatusCycler>();
+
 // Everything above this line is configuring "Services" in our application -----------
 var app = builder.Build();
 

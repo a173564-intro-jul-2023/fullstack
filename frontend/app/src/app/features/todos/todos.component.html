@@ -1,10 +1,17 @@
 <section>
   <h2 class="text-2xl">Your Todo List Stuff</h2>
 </section>
-<section>
-  <app-entry (onItemAdded)="addItem($event)" />
-</section>
+<div *ngIf="todoListLoaded() === false">
+  <span class="loading loading-spinner loading-lg"></span>
+  <p>Please wait while we get your list...</p>
+</div>
 
-<section>
-  <app-list [list]="todoList()" (onStatusCycled)="statusChange($event)" />
-</section>
+<div *ngIf="todoListLoaded() === true">
+  <section>
+    <app-entry (onItemAdded)="addItem($event)" />
+  </section>
+
+  <section>
+    <app-list [list]="todoList()" (onStatusCycled)="statusChange($event)" />
+  </section>
+</div>

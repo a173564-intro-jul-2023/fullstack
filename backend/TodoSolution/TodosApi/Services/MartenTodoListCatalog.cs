@@ -44,9 +44,11 @@ public class MartenTodolistCatalog : IManageTheTodoListCatalog
         TodoListItemResponseModel updated = _statusCycler.ProvideNextStatusFrom(savedItem);
 
         // Save it in the database
+        _session.Store(updated);
+        await _session.SaveChangesAsync();
 
         // return the saved thing back
-        return null;
+        return updated;
     }
 
 
