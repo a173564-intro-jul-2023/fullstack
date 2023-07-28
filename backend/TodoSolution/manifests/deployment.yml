@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todos-api
+  namespace: hypertheory
+spec:
+  selector:
+    matchLabels:
+      app: todos-api
+  template:
+    metadata:
+      labels:
+        app: todos-api
+    spec:
+      containers:
+      - name: todos-api
+        image: jeffrygonzalez/todos-api-intro-july-2023:v0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        env:
+          - name: ConnectionStrings__todos
+            value: "Server=postgres-service;User Id=user;Password=password"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
